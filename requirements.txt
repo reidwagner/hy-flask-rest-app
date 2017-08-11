@@ -1,0 +1,4 @@
+hy==0.13.0
+Flask==0.12.2
+Flask-HTTPAuth==3.2.3
+jsonify==0.5
