@@ -2,7 +2,7 @@
 
 Rewrote in [Hy](http://docs.hylang.org/en/stable/) and with sqlite support the app built in [this tutorial](https://blog.miguelgrinberg.com/post/designing-a-restful-api-with-python-and-flask). Hy is a Lisp dialect that compiles into Python AST.
 
-You'll need to set up a sqlite database in the directory named tasks.db and create this table: <code>CREATE TABLE task(id smallint, title varchar(20), description varchar(200), done smallint);</code>
+You'll need to set up a sqlite database in the directory named tasks.db and create this table: <code>CREATE TABLE task(id smallint, title varchar(20), description varchar(200), done smallint);</code>. I will be adding some better db management and setup using SQLAlchemy next!
 
 To run:
 ```shell
