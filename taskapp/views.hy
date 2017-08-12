@@ -7,10 +7,10 @@
                 request
                 g]])
 (import [flask_httpauth [HTTPBasicAuth]])
-(import [dbmanager :as dbm])
+(import [taskapp [dbmanager :as dbm]])
+(import [taskapp [app]])
 
 (setv auth (HTTPBasicAuth))
-(setv app (Flask "__main__"))
 
 #@(auth.get-password
 (defn get-password [username]
