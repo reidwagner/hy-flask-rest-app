@@ -31,12 +31,12 @@
 #@((app.route "/todo/api/v1.0/tasks" :methods ["GET"]) auth.login-required
 (defn get-tasks-route []
    (setv task (.retrieve-all-tasks dbm))
-   (jsonify {:tasks task})))
+   (jsonify {"tasks" task})))
 
 #@((app.route "/todo/api/v1.0/tasks/<int:task_id>" :methods ["GET"]) auth.login-required
 (defn get-task [task-id]
    (setv task (.retrieve-task dbm task-id))
-   (jsonify {:tasks task})))
+   (jsonify {"tasks" task})))
 
 #@((app.route "/todo/api/v1.0/tasks" :methods ["POST"]) auth.login-required
 (defn create-task-route []
@@ -49,7 +49,7 @@
         (get request-json "title")                  ; title
         (.get request-json "description" "")        ; description
         (if (.get request-json "done" False) 1 0))  ; done
-    (jsonify {:result "Success"})))
+    (jsonify {"result" "Success"})))
 
 #@((app.route "/todo/api/v1.0/tasks/<int:task_id>" :methods ["PUT"]) auth.login-required
 (defn update-task-route [task-id]
@@ -61,13 +61,13 @@
         (.get request-json "title" (get task "title"))
         (.get request-json "description" (get task "description"))
         (.get request-json "done" (get task "done")))
-    (jsonify {:result "Success"})))
+    (jsonify {"result" "Success"})))
 
 #@((app.route "/todo/api/v1.0/tasks/<int:task_id>" :methods ["DELETE"]) auth.login-required
 (defn delete-task-route [task-id]
     (.delete-task dbm task-id)
-    (jsonify {:result "Success"})))
+    (jsonify {"result" "Success"})))
 
 #@(auth.error-handler
 (defn unauthorized []
-    (make-response (jsonify {:error "Unauthorized access"}) 401)))
+    (make-response (jsonify {"error" "Unauthorized access"}) 401)))
