@@ -12,15 +12,13 @@
 (setv auth (HTTPBasicAuth))
 (setv app (Flask "__main__"))
 
-(with-decorator
-    auth.get-password
+#@(auth.get-password
 (defn get-password [username]
     (if (= username "foo")
         "bar"
         None)))
 
-(with-decorator
-    app.teardown_appcontext
+#@(app.teardown_appcontext
 (defn close-connection [exception]
     dbm.close-db()))
 
@@ -30,23 +28,17 @@
         request-json
         (abort 400))) 
 
-(with-decorator
-    (app.route "/todo/api/v1.0/tasks" :methods ["GET"])
-    auth.login-required
+#@((app.route "/todo/api/v1.0/tasks" :methods ["GET"]) auth.login-required
 (defn get-tasks-route []
    (setv task (.retrieve-all-tasks dbm))
    (jsonify {:tasks task})))
 
-(with-decorator
-    (app.route "/todo/api/v1.0/tasks/<int:task_id>" :methods ["GET"])
-    auth.login-required
+#@((app.route "/todo/api/v1.0/tasks/<int:task_id>" :methods ["GET"]) auth.login-required
 (defn get-task [task-id]
    (setv task (.retrieve-task dbm task-id))
    (jsonify {:tasks task})))
 
-(with-decorator
-    (app.route "/todo/api/v1.0/tasks" :methods ["POST"])
-    auth.login-required
+#@((app.route "/todo/api/v1.0/tasks" :methods ["POST"]) auth.login-required
 (defn create-task-route []
     (setv request-json (retrieve-request-json))
     (if (not (and request-json (in "title" request-json)))
@@ -59,9 +51,7 @@
         (if (.get request-json "done" False) 1 0))  ; done
     (jsonify {:result "Success"})))
 
-(with-decorator
-    (app.route "/todo/api/v1.0/tasks/<int:task_id>" :methods ["PUT"])
-    auth.login-required
+#@((app.route "/todo/api/v1.0/tasks/<int:task_id>" :methods ["PUT"]) auth.login-required
 (defn update-task-route [task-id]
     (setv task (.retrieve-task dbm task-id))
     (setv request-json (retrieve-request-json))
@@ -73,13 +63,11 @@
         (.get request-json "done" (get task "done")))
     (jsonify {:result "Success"})))
 
-(with-decorator
-    (app.route "/todo/api/v1.0/tasks/<int:task_id>" :methods ["DELETE"])
-    auth.login-required
+#@((app.route "/todo/api/v1.0/tasks/<int:task_id>" :methods ["DELETE"]) auth.login-required
 (defn delete-task-route [task-id]
     (.delete-task dbm task-id)
     (jsonify {:result "Success"})))
 
-(with-decorator auth.error-handler
+#@(auth.error-handler
 (defn unauthorized []
     (make-response (jsonify {:error "Unauthorized access"}) 401)))
